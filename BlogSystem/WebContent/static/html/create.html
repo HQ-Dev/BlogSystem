@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>文章列表</title>
+	<link rel="stylesheet" href="/BlogSystem/static/css/create.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/BlogSystem/static/serve/bootstrap3-wysihtml5.css">
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+  <script src="/BlogSystem/static/serve/bootstrap3-wysihtml5.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container">
+		  <div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+			  </button>
+				<a class="navbar-brand" href="./list.html"> Archy 的博客</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="./homepage.html">首页</a></li>
+					<li><a href="#">归档</a></li>
+					<li><a href="#">关于作者</a></li>
+				</ul>
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="搜索...">
+				</form>
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container">
+		<div class="page-header">
+	    <h2>新建博客
+				<small> 在这里新建一篇博客</small>
+			</h2>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-8">
+				
+				<form action="/BlogSystem/createPost.jsp" method="POST">
+  				<div class="form-group">
+    				<label for="title">标题</label>
+			  	  <input type="text" class="form-control" id="title" name="title" placeholder="文章的标题" autofocus>
+				  </div>
+				  <div class="form-group">
+				    <label for="content">内容</label>
+				    <textarea class="form-control" id="content" name="content" placeholder="文章的内容" rows="18">
+				    </textarea>
+				    <script type="text/javascript">
+  						$('#content').wysihtml5();
+						</script>	
+				  </div>
+				  <button type="submit" class="btn pull-right btn-primary">提交</button>
+				</form>
+			  
+			</div>
+
+			<div class="col-sm-3 col-sm-offset-1">信息栏
+			
+				<div class="sidebar-module sidebar-module-inset">
+					<div class="avatar">
+						<img class="img-circle img-rounded img-thumbnail avatar" src="./Static/Images/catty.jpg">
+						<div>
+							<h4>Archy</h4>
+							<a href="#">Hq_dev@163.com</a>
+						</div>
+					</div>
+					<p>
+          Ornare sapien rhoncus, nec mi hendrerit. Ante aliquam dui arcu, diam sodales erat felis dolor sed in, nec placerat non. 
+					</p>
+				</div>
+
+				<div class="sidebar-module">
+					<h4>归档</h4>
+					<ol class="list-unstyled">
+					  <li><a href="#">2016年5月</a></li>
+						<li><a href="#">2016年4月</a></li>
+						<li><a href="#">2016年3月</a></li>
+						<li><a href="#">2016年2月</a></li>
+						<li><a href="#">2016年1月</a></li>
+						<li><a href="#">2015年12月</a></li>
+						<li><a href="#">2015年11月</a></li>
+					</ol>
+				</div>
+			
+			</div>
+
+		</div>
+	</div>
+
+	<!-- 增加页角  -->
+	<footer>
+ 	  &copy; 2014 天马营, Inc. &middot; <a href="#">隐私</a> &middot;
+ 	    <a href="#">条款</a> 
+ 	</footer> 
+</body>
+</html>

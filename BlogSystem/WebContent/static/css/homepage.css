@@ -1,0 +1,36 @@
+.carousel .slide {
+	padding-top: 0px;
+	padding-bottom 0px;
+}
+
+.carousel-inner {
+	width:100%;
+	height:400px;   /* 调整轮播背景的高度 */
+}
+
+.carousel .carousel-inner {
+	position:relative;
+}
+
+/* 这些知识不牢固，还要再去巩固学习 */
+.carousel-indicators {
+	positon:absolute;
+	bottom:30px;
+}
+
+.myCarousel  .carousel-caption{
+	position:relative;
+	left:0px;
+	
+}
+
+
+.carousel-inner img {
+	height:400px;
+	width:800px;
+}
+
+/* 展示的项目和轮播保持距离 */
+.project-list {
+	padding-top:50px;
+}
