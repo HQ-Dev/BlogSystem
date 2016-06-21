@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Blog Archive</title>
-	
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
@@ -40,25 +39,31 @@
 			<div id="navbar" class="collapse navbar-collapse">     <!-- 其中的 id="navbar" 已被折叠按钮引用到 -->
 				<!-- 为了向导航栏添加链接，只需要简单地添加带有 class .nav、.navbar-nav 的 <ul> 无序列表即可。 -->
 				<ul class="nav navbar-nav">
-					<li><a href="/BlogSystem/userPost">我的首页</a></li>
-					<li class="dropdown">    <!-- "dropdown" 语义化类 -->
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">   <!-- data-toggle="dropdown" 有实意，显示 -->
-						帐号管理<span class="caret"></span></a>    <!-- <span class="carset"> 一个三角形图案 -->
-						<ul class="dropdown-menu">    <!-- .dropdown-menu 包装了下拉显示菜单，更协调美观 -->
-							<li class="dropdown-header">管理</li>     <!-- .dropdown-header 为下拉菜单区域提供了标题,说明此区域的职责 -->
-							<li><a href="/BlogSystem/userPost">Blog Archive</a></li>
-							<li><a href="static/templates/createPost.jsp">Create New Blog</a></li>
-							<li><a href="#">Edit Blog</a></li>
-							<li class="divider"></li>     <!-- .divider 是一条分割线 -->
-							<c:if test="${true}">
-							<li class="dropdown-header">帐号</li>
-							<li><a href="#">Personal Information</a></li>
-							<li><a href="#">Modifier Password</a></li>
-							<li><a href="#">Logout</a></li>
-							</c:if>
-						</ul>
-					</li>
-					<li><a href="/BlogSystem/static/html/register.html">注册帐号</a></li>
+					<c:choose>
+						<c:when test="${sessionScope.user != null}"> <!-- 作为判断条件表示当前用户已经登录。 -->
+							<li><a href="/BlogSystem/userPost">我的首页</a></li>
+							<li class="dropdown">    <!-- "dropdown" 语义化类 -->
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">   <!-- data-toggle="dropdown" 有实意，显示 -->
+								帐号管理<span class="caret"></span></a>    <!-- <span class="carset"> 一个三角形图案 -->
+								<ul class="dropdown-menu">    <!-- .dropdown-menu 包装了下拉显示菜单，更协调美观 -->
+									<li class="dropdown-header">管理</li>     <!-- .dropdown-header 为下拉菜单区域提供了标题,说明此区域的职责 -->
+									<li><a href="/BlogSystem/userPost">Blog Archive</a></li>
+									<li><a href="/BlogSystem/static/templates/createPost.jsp">Create New Blog</a></li>
+									<li class="divider"></li>     <!-- .divider 是一条分割线 -->
+									<c:if test="${true}">
+									<li class="dropdown-header">帐号</li>
+									<li><a href="#">Personal Information</a></li>
+									<li><a href="#">Modifier Password</a></li>
+									<li><a href="#">Logout</a></li>
+									</c:if>
+								</ul>
+							</li>
+						</c:when>
+						<c:otherwise>
+					  	<li><a href="/BlogSystem/static/templates/login.jsp">登录</a></li>
+					  	<li><a href="/BlogSystem/static/templates/register.jsp">注册</a></li>
+					  </c:otherwise>
+					</c:choose>
 				</ul>
 				<!-- 将表单放置于 .navbar-form 之内可以呈现很好的垂直对齐，并在较窄的视口（viewport）中呈现折叠状态。
 				 使用对齐选项可以规定其在导航条上出现的位置。 -->
