@@ -28,13 +28,13 @@
     <br>
     <form action="/BlogSystem/register" method="POST" class="form-group">
       <label>邮 箱</label> 
-      <input type="text" name="email" class="form-control" placeholder="tianmaying@163.com">  <br>
+      <input type="text" name="email" class="form-control" placeholder="tianmaying@163.com" required="">  <br>
       <label>用户名</label>
-      <input type="text" name="userName" class="form-control" placeholder="tianmaying">  <br>
+      <input type="text" name="userName" class="form-control" placeholder="tianmaying" required="">  <br>
       <label>设置密码</label>
-      <input type="password" name="password" class="form-control"><br>
+      <input type="password" name="password" class="form-control" required=""><br>
       <label>确认密码</label>
-      <input type="password" name="rePassword" class="form-control">  <br>
+      <input type="password" name="rePassword" class="form-control" required="">  <br>
       <button type="submit" class="btn btn-primary">立即注册</button>
     </form>  
     <p>如果您已有帐号，请点此登录</p><a href="/BlogSystem/static/templates/login.jsp"><button class="btn btn-success">登录</button></a>

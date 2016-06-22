@@ -24,9 +24,7 @@ public class UserPostListController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 				throws ServletException, IOException {
-		List<Post> posts = (ArrayList<Post>) Data.getPosts();
 		
-		request.setAttribute("posts", posts);
 		
 		// 路径一定要写对，路径错误就会找不到文件
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");

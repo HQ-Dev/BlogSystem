@@ -27,10 +27,9 @@ public class UserLoginController extends HttpServlet {
 			Cookie c = cookies[i];
 			if (c.getName().equals("user")) {
 				String user = c.getValue();
-				// 对 经过 BASE64 处理后的 userName 解码
-				String decodeName = ArchyBase64.decode(user);
+				
 				// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
-				response.sendRedirect("/BlogSystem/userPost?username=" + decodeName);
+				response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
 				return;   // 结束该段程序，不再执行
 			}
 		}
@@ -42,28 +41,32 @@ public class UserLoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		response.setCharacterEncoding("utf8");
-		
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String[] values = request.getParameterValues("remember-me");
 		
 		// 数据是否和数据库中相等
 		User user = Data.getByUsername(userName);
-		
         if (user == null || !user.getPassword().equals(password)) {
         	response.sendRedirect("/BlogSystem/static/html/loginFailed.html");
-        	
-        } else {
+        }
+        // 登陆成功的情况下
+        else {
         	if (values != null && !values[0].isEmpty()) { // 这里表示用户勾选了Remember Me
         		// 对 cookie 中的值用base64编码加密
-        		String encodeUserName =  ArchyBase64.encode(userName);
-        		Cookie cookie = new Cookie("user", encodeUserName);
+        		//String encodeUserName =  ArchyBase64.encode(userName);
+        		Cookie cookie = new Cookie("user", userName);
         		
         		cookie.setMaxAge(7 * 24 * 60 * 60);
         		response.addCookie(cookie);
+        		request.getSession().setAttribute("user", user);
+            	response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+            	return;
+        	} else {  
+        		// 没有勾选自动登录的处理情况： 不创建 cookie
+        		request.getSession().setAttribute("user", user);
+            	response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
         	}
-        	request.getSession().setAttribute("user", user);
-        	response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
         }
 			
 	}
