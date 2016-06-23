@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -25,11 +26,13 @@ public class UserLoginController extends HttpServlet {
 		
 		for (int i = 0; i < cookies.length; i++) {
 			Cookie c = cookies[i];
-			if (c.getName().equals("user")) {
+			if (c.getName().equals("user")) {   // 注意清除cookie privacy history
 				String user = c.getValue();
 				
 				// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
-				response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
+				dispatcher.forward(request, response);
+				//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
 				return;   // 结束该段程序，不再执行
 			}
 		}
@@ -57,15 +60,24 @@ public class UserLoginController extends HttpServlet {
         		//String encodeUserName =  ArchyBase64.encode(userName);
         		Cookie cookie = new Cookie("user", userName);
         		
-        		cookie.setMaxAge(7 * 24 * 60 * 60);
+        		cookie.setMaxAge(10 * 60);   // 设置为10分钟 
         		response.addCookie(cookie);
         		request.getSession().setAttribute("user", user);
-            	response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        		
+        		String next = (String) request.getSession().getAttribute("next");
+        		if (next == null)
+        			response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        		else 
+        			response.sendRedirect(next);
             	return;
         	} else {  
         		// 没有勾选自动登录的处理情况： 不创建 cookie
         		request.getSession().setAttribute("user", user);
-            	response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        		String next = (String) request.getSession().getAttribute("next");
+        		if (next == null)
+        			response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        		else 
+        			response.sendRedirect(next);
         	}
         }
 			
