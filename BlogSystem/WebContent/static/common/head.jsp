@@ -54,7 +54,7 @@
 									<li class="dropdown-header">帐号</li>
 									<li><a href="#">Personal Information</a></li>
 									<li><a href="#">Modifier Password</a></li>
-									<li><a href="#">Logout</a></li>
+									<li><a href="/BlogSystem/logout.do">Logout</a></li>
 									</c:if>
 								</ul>
 							</li>
