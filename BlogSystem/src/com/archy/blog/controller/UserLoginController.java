@@ -24,21 +24,23 @@ public class UserLoginController extends HttpServlet {
 			throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
 		
-		for (int i = 0; i < cookies.length; i++) {
-			Cookie c = cookies[i];
-			if (c.getName().equals("user")) {   // 注意清除cookie privacy history
-				String user = c.getValue();
-				
-				// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
-				dispatcher.forward(request, response);
-				//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
-				return;   // 结束该段程序，不再执行
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie c = cookies[i];
+				if (c.getName().equals("user")) {   // 注意清除cookie privacy history
+					String user = c.getValue();
+					
+					// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
+					dispatcher.forward(request, response);
+					//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
+					return;   // 结束该段程序，不再执行
+				}
 			}
+		} else {
+			// 创建一个LoginServlet类，处理/login的URL。如果是GET请求，则显示登陆表单页面login.jsp
+			response.sendRedirect("/BlogSystem/static/templates/login.jsp");
 		}
-		
-		// 创建一个LoginServlet类，处理/login的URL。如果是GET请求，则显示登陆表单页面login.jsp
-		response.sendRedirect("/BlogSystem/static/templates/login.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 

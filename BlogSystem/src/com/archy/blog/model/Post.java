@@ -8,15 +8,22 @@ public class Post {
 	
 	private long id;
 	private String title;
+	private String createdDate;
 	private String content;
-	private Date createdTime;
 	
-	public Post(String title, String content) {
+	public Post(String title, String createDate) {
+		this.id = postId;
+		postId++;
+		this.title = title;
+		this.createdDate = createDate;
+	}
+	
+	public Post(String title, String content, String createDate) {
 		this.id = postId;
 		postId++;
 		this.title = title;
 		this.content = content;
-		this.createdTime = new Date();
+		this.createdDate = createDate;
 	}
 
 	public long getId() {
@@ -43,9 +50,14 @@ public class Post {
 		this.content = content;
 	}
 
-	public Date getCreatedTime() {
-		return createdTime;
+	public String getCreatedDate() {
+		return createdDate;
 	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+	
 	
 	
 }

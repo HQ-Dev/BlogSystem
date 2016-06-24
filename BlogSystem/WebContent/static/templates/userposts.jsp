@@ -1,4 +1,5 @@
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map,java.util.Date"%>
+<%@page import="java.util.ArrayList, java.text.SimpleDateFormat"%>
 <%@page import="com.archy.blog.model.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -33,16 +34,22 @@
 			<div class="col-sm-8">文章列表
 				
 				<!-- 使用Jstl 改写了 JSP 表达式 -->
-				<% if(request.getAttribute("posts") != null) {%>
-					<c:forEach var="post" items="${posts}">
+				<%! 
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					
+				%>
+				<% Map<Date, String> posts = (Map<Date, String>) request.getSession().getAttribute("postsMap"); %>
+				<% 
+					if(posts != null) {
+						for (Date date: posts.keySet())	{
+				%>
 						<div class="blog-post">
-					  <h3 class="blog-post-title"><a href="#">${post.title}</a></h3>
-						<p class="blog-post-meta">${post.createdTime} 分组：<a href="#">Web开发</a></p>
-						<p class="blog-post-content">${post.content}</p>
+					  <h3 class="blog-post-title"><a href="#"><%=posts.get(date) %> </a></h3>
+						<p class="blog-post-meta"> 创建时间：<%=dateFormat.format(date) %> 分组：<a href="#">Web开发</a></p>
+						<p class="blog-post-content"> 略 ...... </p>
 					</div>
 					<hr>
-					</c:forEach>
-			  <% } else {%>
+			  <% } } else {%>
         <h4> 你还没有博文，请创建你的第一篇博文！ </h4>
         <% } %>
         <!-- 加上翻页的效果  -->

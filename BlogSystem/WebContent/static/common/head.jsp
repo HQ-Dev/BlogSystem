@@ -41,13 +41,13 @@
 				<ul class="nav navbar-nav">
 					<c:choose>
 						<c:when test="${sessionScope.user != null}"> <!-- 作为判断条件表示当前用户已经登录。 -->
-							<li><a href="/BlogSystem/static/templates/userposts.jsp">我的首页</a></li>
+							<li><a href="/BlogSystem/userPost">我的首页</a></li>
 							<li class="dropdown">    <!-- "dropdown" 语义化类 -->
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">   <!-- data-toggle="dropdown" 有实意，显示 -->
 								帐号管理<span class="caret"></span></a>    <!-- <span class="carset"> 一个三角形图案 -->
 								<ul class="dropdown-menu">    <!-- .dropdown-menu 包装了下拉显示菜单，更协调美观 -->
 									<li class="dropdown-header">管理</li>     <!-- .dropdown-header 为下拉菜单区域提供了标题,说明此区域的职责 -->
-									<li><a href="/BlogSystem/static/templates/userposts.jsp">Blog Archive</a></li>
+									<li><a href="/BlogSystem/userPost">Blog Archive</a></li>
 									<li><a href="/BlogSystem/static/templates/createPost.jsp">Create New Blog</a></li>
 									<li class="divider"></li>     <!-- .divider 是一条分割线 -->
 									<c:if test="${true}">

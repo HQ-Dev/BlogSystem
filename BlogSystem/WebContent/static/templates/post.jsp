@@ -27,6 +27,8 @@
 			<div class="col-sm-8">
 				
 				<h2>${post.title }</h2>
+				<label>${post.createdDate }</label>
+				<hr>
         <p>${post.content }</p>
         <hr>
         <br>
