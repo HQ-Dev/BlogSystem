@@ -1,7 +1,5 @@
 package com.archy.blog.model;
 
-import java.util.Date;
-
 public class Post {
 
 	private static long postId = 1;
