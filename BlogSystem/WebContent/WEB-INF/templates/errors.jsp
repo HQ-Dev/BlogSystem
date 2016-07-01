@@ -14,7 +14,7 @@
 <body>
 
 	<!-- 导航条 -->	
-	<jsp:include page="/static/common/head.jsp" />
+	<jsp:include page="/WEB-INF/common/head.jsp" />
 
 
 	<c:if test="${errors != null}">
@@ -23,10 +23,10 @@
 		</c:forEach>
 	</c:if>
 
-	<label><a href="/BlogSystem/static/templates/register.jsp">返回注册页面</a></label>
-	<label><a href="/BlogSystem/static/templates/login.jsp">返回登录页面</a></label>
+	<label><a href="/BlogSystem/register">返回注册页面</a></label>
+	<label><a href="/BlogSystem/login">返回登录页面</a></label>
 	<!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />
 
 </body>
 </html>

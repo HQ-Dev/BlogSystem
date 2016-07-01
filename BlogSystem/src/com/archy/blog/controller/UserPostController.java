@@ -36,7 +36,7 @@ public class UserPostController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		doPost(request, response);
+		request.getRequestDispatcher("/WEB-INF/templates/createPost.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -59,10 +59,10 @@ public class UserPostController extends HttpServlet {
 			//addPost(title, content, userName, createDate);
 			addPostWithMysql(title, content, creator, createdDate);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/post.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/post.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/createPost.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/createPost.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

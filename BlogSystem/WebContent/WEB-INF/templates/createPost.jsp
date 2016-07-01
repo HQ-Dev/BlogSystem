@@ -18,7 +18,7 @@
 <body>
 
 	<!-- 导航条 -->	
-	<jsp:include page="/static/common/head.jsp" />
+	<jsp:include page="/WEB-INF/common/head.jsp" />
 	
 	<div class="container">
 		<div class="page-header">
@@ -50,7 +50,7 @@
 
 			<div class="col-sm-3 col-sm-offset-1">信息栏
 			
-				<jsp:include page="/static/common/userInfo.jsp" />
+				<jsp:include page="/WEB-INF/common/userInfo.jsp" />
 			
 			</div>
 
@@ -60,7 +60,7 @@
 	<hr>
 	
 	<!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />
 
 </body>
 </html>

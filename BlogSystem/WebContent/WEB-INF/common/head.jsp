@@ -48,7 +48,7 @@
 								<ul class="dropdown-menu">    <!-- .dropdown-menu 包装了下拉显示菜单，更协调美观 -->
 									<li class="dropdown-header">管理</li>     <!-- .dropdown-header 为下拉菜单区域提供了标题,说明此区域的职责 -->
 									<li><a href="/BlogSystem/userPost">Blog Archive</a></li>
-									<li><a href="/BlogSystem/static/templates/createPost.jsp">Create New Blog</a></li>
+									<li><a href="/BlogSystem/createPost">Create New Blog</a></li>
 									<li class="divider"></li>     <!-- .divider 是一条分割线 -->
 									<c:if test="${true}">
 									<li class="dropdown-header">帐号</li>
@@ -60,8 +60,8 @@
 							</li>
 						</c:when>
 						<c:otherwise>
-					  	<li><a href="/BlogSystem/static/templates/login.jsp">登录</a></li>
-					  	<li><a href="/BlogSystem/static/templates/register.jsp">注册</a></li>
+					  	<li><a href="/BlogSystem/login">登录</a></li>
+					  	<li><a href="/BlogSystem/register">注册</a></li>
 					  </c:otherwise>
 					</c:choose>
 				</ul>

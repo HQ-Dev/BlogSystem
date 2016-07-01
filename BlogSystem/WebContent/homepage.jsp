@@ -19,7 +19,7 @@
 <body>
 	<!-- 导航条 -->
 	
-	<jsp:include page="/static/common/head.jsp" />	
+	<jsp:include page="/WEB-INF/common/head.jsp" />	
 	<!-- -------------------------------------------------------------------------------------------- -->
 	
 	<!-- 增加一个轮播的页面 -->
@@ -142,7 +142,7 @@
 	<br>
 	<hr>
 	<!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />
 </body>
 
 </html>

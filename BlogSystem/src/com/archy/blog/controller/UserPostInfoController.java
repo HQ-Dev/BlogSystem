@@ -51,7 +51,7 @@ public class UserPostInfoController extends HttpServlet {
 		
 		//readPostFromLocal(userName, createDate, title, request);
 		
-		request.getRequestDispatcher("/static/templates/post.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/templates/post.jsp").forward(request, response);
 	}
 
 	

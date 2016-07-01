@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +30,26 @@ public class UserResgisterController extends HttpServlet {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		
+		Cookie[] cookies = request.getCookies();
+		
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie c = cookies[i];
+				if (c.getName().equals("user")) {   // 注意清除cookie privacy history
+					
+					// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/userposts.jsp");
+					dispatcher.forward(request, response);
+					//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
+					return;   // 结束该段程序，不再执行
+				} else {
+					request.getRequestDispatcher("/WEB-INF/templates/register.jsp").forward(request, response);
+				}
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +59,7 @@ public class UserResgisterController extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String confirmedPassword = request.getParameter("rePassword");
-		String avatar = "/blogSystem/static/templates/img/avatat-default.jpg";
+		String avatar = "/blogSystem/WEB-INF/templates/img/avatat-default.jpg";
 		// next
 		List<String> errors = new ArrayList<String>();
 		
@@ -59,18 +79,18 @@ public class UserResgisterController extends HttpServlet {
 		if (!errors.isEmpty()) {
 			request.setAttribute("errors", errors);
 			// 跳转到错误页面
-			request.getRequestDispatcher("/static/templates/errors.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/templates/errors.jsp").forward(request, response);
 		} else 
 		{
 			// 没有错误，则将注册信息存储到数据库表中 user ，并跳转到登录界面
 			if (saveRegisterUser(email, userName, password, avatar) != 0) {
 				// 存储用户成功
-				request.getRequestDispatcher("/static/templates/login.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/templates/login.jsp").forward(request, response);
 			} else {
 				// 存储用户失败
 				errors.add("存储用户失败!");
 				request.setAttribute("errors", errors);
-				request.getRequestDispatcher("/static/templates/errors.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/templates/errors.jsp").forward(request, response);
 			}
 		}
 	}

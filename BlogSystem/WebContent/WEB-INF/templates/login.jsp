@@ -14,7 +14,7 @@
 <body>
 
 	<!-- 导航条 -->	
-	<jsp:include page="/static/common/head.jsp" />
+	<jsp:include page="/WEB-INF/common/head.jsp" />
 	
 	<!-- ------------------------------------------------------------------------------------------------- -->
 	
@@ -37,7 +37,7 @@
   		</div>
       <button class="btn btn-success">登录</button>
     </form>  
-    <a href="/BlogSystem/static/templates/register.jsp"><button type="submit" class="btn btn-primary">立即注册</button></a>
+    <a href="/BlogSystem/register"><button type="submit" class="btn btn-primary">立即注册</button></a>
   </div>
   <br>
   <hr>
@@ -45,7 +45,7 @@
   <!-- ---------------------------------------------------------------------------------------------------- -->
   
   <!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />
 
 </body>
 </html>

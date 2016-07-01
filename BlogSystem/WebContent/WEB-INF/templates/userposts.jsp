@@ -1,20 +1,27 @@
+<%@page import="java.util.Map,java.util.Date"%>
+<%@page import="java.util.ArrayList, java.text.SimpleDateFormat"%>
+<%@page import="com.archy.blog.model.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE">
+
+<!DOCTYPE>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Blog Archive</title>
+	<link rel="stylesheet" href="/BlogSystem/static/css/userPosts.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
-<title>${post.title}</title>
 </head>
 <body>
 
 	<!-- 导航条 -->
-	<jsp:include page="/static/common/head.jsp" />	
+	<jsp:include page="/WEB-INF/common/head.jsp" />	
+	
+	<!-- --------------------------------------------------------------------------------------------- -->
 	
 	<div class="container">
 		<div class="page-header">
@@ -24,14 +31,27 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-8">
+			<div class="col-sm-8">文章列表
 				
-				<h2>${post.title }</h2>
-				<label>${post.createdDate }</label>
-				<hr>
-        <p>${post.content }</p>
-        <hr>
-        <br>
+				<!-- 使用Jstl 改写了 JSP 表达式 -->
+				
+				
+				<c:choose>
+					<c:when test="${posts != null}">
+						<c:forEach var="post" items="${posts}">
+							<div class="blog-post">
+							  <h3 class="blog-post-title"><a href="/BlogSystem/postInfo.do?postId=${post.postId}">${post.title}</a></h3>
+								<p class="blog-post-meta"> 创建时间：${post.createdDate} 分组：<a href="#">Web开发</a></p>
+								<p class="blog-post-content"> 略 ...... </p>
+							</div>
+							<hr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+					  <h4> 你还没有博文，请创建你的第一篇博文！ </h4>
+					</c:otherwise>
+				</c:choose>
+       
         <!-- 加上翻页的效果  -->
 				<nav>
 					<ul class="pager">
@@ -45,16 +65,17 @@
 			<!-- --------------------------------------------------------------------------------------- -->
 
 			<div class="col-sm-3 col-sm-offset-1">信息栏
-				<jsp:include page="/static/common/userInfo.jsp" />
+			
+				<jsp:include page="/WEB-INF/common/userInfo.jsp" />
+			
 			</div>
 
 		</div>
 	</div>
-	
+
 	<!-- ------------------------------------------------------------------------------------------- -->
 
 	<!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />
-
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />
 </body>
 </html>

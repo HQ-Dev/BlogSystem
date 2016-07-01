@@ -43,7 +43,7 @@ public class UserPostListController extends HttpServlet {
 		request.setAttribute("posts", posts);
 		
 		// 路径一定要写对，路径错误就会找不到文件
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/userposts.jsp");
 		dispatcher.forward(request, response);
 	}
 

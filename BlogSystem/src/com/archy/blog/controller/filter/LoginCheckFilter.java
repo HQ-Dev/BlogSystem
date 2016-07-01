@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.archy.blog.model.User;
 
 
-@WebFilter(urlPatterns={"/static/templates/createPost.jsp",
-		"/static/templates/post.jsp","/static/templates/userList.jsp",
-		"/static/templates/userposts.jsp"})
+@WebFilter(urlPatterns={"/WEB-INF/templates/createPost.jsp",
+		"/WEB-INF/templates/post.jsp","/WEB-INF/templates/userList.jsp",
+		"/WEB-INF/templates/userposts.jsp"})
 public class LoginCheckFilter implements Filter {
 
     public LoginCheckFilter() {

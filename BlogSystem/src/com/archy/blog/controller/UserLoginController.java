@@ -43,15 +43,14 @@ public class UserLoginController extends HttpServlet {
 					//String user = c.getValue();
 					
 					// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/userposts.jsp");
 					dispatcher.forward(request, response);
 					//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
 					return;   // 结束该段程序，不再执行
+				} else {
+					request.getRequestDispatcher("/WEB-INF/templates/login.jsp").forward(request, response);
 				}
 			}
-		} else {
-			// 创建一个LoginServlet类，处理/login的URL。如果是GET请求，则显示登陆表单页面login.jsp
-			response.sendRedirect("/BlogSystem/static/templates/login.jsp");
 		}
 	}
 
@@ -62,7 +61,6 @@ public class UserLoginController extends HttpServlet {
 		String password = request.getParameter("password");
 		String[] values = request.getParameterValues("remember-me");
 		
-		// 数据是否和数据库中相等
 		User user = new User();
         
         List<String> errors = new ArrayList<>();
@@ -101,7 +99,7 @@ public class UserLoginController extends HttpServlet {
         } else {
         	// 登录失败
         	request.setAttribute("errors", errors);
-        	request.getRequestDispatcher("/static/templates/errors.jsp").forward(request, response);
+        	request.getRequestDispatcher("/WEB-INF/templates/errors.jsp").forward(request, response);
         }   
         	
      }	

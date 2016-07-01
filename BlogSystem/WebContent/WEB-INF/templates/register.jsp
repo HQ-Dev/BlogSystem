@@ -14,7 +14,7 @@
 <body>
 
 	<!-- 导航条 -->	
-	<jsp:include page="/static/common/head.jsp" />
+	<jsp:include page="/WEB-INF/common/head.jsp" />
 	
 	<!-- ------------------------------------------------------------------------------------------------- -->
 	
@@ -37,7 +37,7 @@
       <input type="password" name="rePassword" class="form-control" required="">  <br>
       <button type="submit" class="btn btn-primary">立即注册</button>
     </form>  
-    <p>如果您已有帐号，请点此登录</p><a href="/BlogSystem/static/templates/login.jsp"><button class="btn btn-success">登录</button></a>
+    <p>如果您已有帐号，请点此登录</p><a href="/BlogSystem/login"><button class="btn btn-success">登录</button></a>
   </div>
   <br>
   <hr>
@@ -45,7 +45,7 @@
   <!-- ------------------------------------------------------------------------------------------------- -->
   
    <!-- 增加页角  -->
- 	<jsp:include page="/static/common/footer.jsp" />	
+ 	<jsp:include page="/WEB-INF/common/footer.jsp" />	
  	
 </body>
 </html>
