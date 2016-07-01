@@ -9,6 +9,12 @@ public class User {
 	private String password;
 	private String email;
 	private String avatar = "/BlogSystem/static/img/avatar-default.jpg";
+	private String description = null;
+	private String registeredDate = null;
+	
+	public User() {
+	
+	}
 	
 	public User(String userName, String password, String email) {
 		this.userId = id;
@@ -57,5 +63,22 @@ public class User {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(String registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+	
 
 }

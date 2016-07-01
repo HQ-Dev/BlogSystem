@@ -34,24 +34,24 @@
 			<div class="col-sm-8">文章列表
 				
 				<!-- 使用Jstl 改写了 JSP 表达式 -->
-				<%! 
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-					
-				%>
-				<% Map<Date, String> posts = (Map<Date, String>) request.getSession().getAttribute("postsMap"); %>
-				<% 
-					if(posts != null) {
-						for (Date date: posts.keySet())	{
-				%>
-						<div class="blog-post">
-					  <h3 class="blog-post-title"><a href="#"><%=posts.get(date) %> </a></h3>
-						<p class="blog-post-meta"> 创建时间：<%=dateFormat.format(date) %> 分组：<a href="#">Web开发</a></p>
-						<p class="blog-post-content"> 略 ...... </p>
-					</div>
-					<hr>
-			  <% } } else {%>
-        <h4> 你还没有博文，请创建你的第一篇博文！ </h4>
-        <% } %>
+				
+				
+				<c:choose>
+					<c:when test="${posts != null}">
+						<c:forEach var="post" items="${posts}">
+							<div class="blog-post">
+							  <h3 class="blog-post-title"><a href="/BlogSystem/postInfo.do?postId=${post.postId}">${post.title}</a></h3>
+								<p class="blog-post-meta"> 创建时间：${post.createdDate} 分组：<a href="#">Web开发</a></p>
+								<p class="blog-post-content"> 略 ...... </p>
+							</div>
+							<hr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+					  <h4> 你还没有博文，请创建你的第一篇博文！ </h4>
+					</c:otherwise>
+				</c:choose>
+       
         <!-- 加上翻页的效果  -->
 				<nav>
 					<ul class="pager">

@@ -4,6 +4,11 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.archy.blog.model.Post;
 import com.archy.blog.model.User;
 
 
@@ -21,6 +27,9 @@ import com.archy.blog.model.User;
 public class UserPostController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	Connection connection = null;
+	Statement statement = null;
+	
     public UserPostController() {
         super();
     }
@@ -37,18 +46,20 @@ public class UserPostController extends HttpServlet {
 	    String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		User user = (User) request.getSession().getAttribute("user");
+		long creator = user.getUserId();
 		String userName = user.getUserName();
-		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		//String createDate = dateFormat.format(new Date());
-		String createDate = String.valueOf(new Date().getTime());
-		request.getSession().setAttribute("title", title);
-		request.getSession().setAttribute("createDate", createDate);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String createdDate = dateFormat.format(new Date());
+		
+		Post post = new Post(title, content, createdDate);
+		request.setAttribute("post", post);
 		
 		// 2.调用方法存储文章到指定文件夹
 		if (title != null && title.length() != 0 && content != null && content.length() != 0) {
-			addPost(title, content, userName, createDate);
+			//addPost(title, content, userName, createDate);
+			addPostWithMysql(title, content, creator, createdDate);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/postInfo.do");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/post.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/createPost.jsp");
@@ -56,6 +67,35 @@ public class UserPostController extends HttpServlet {
 		}
 	}
 	
+	
+	private void addPostWithMysql(String title, String content, Long creator, String createdDate) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/blogSystem"
+					+ "?useUnicode=true&characterEncoding=utf8", "root", "123456");
+			statement = connection.createStatement();
+			
+			statement.executeUpdate
+					(String.format("INSERT INTO `post` (`title`, `content`, `creator`, `createdDate`) "
+							+ "VALUES ('%s', '%s', '%d', '%s');", title,content,creator,createdDate));
+			
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (connection != null)
+					connection.close();
+				if (statement != null)
+					statement.close();
+			} catch (SQLException ignore) {
+				// ignore
+			}
+		}
+	}
+	
+	
+	/*
 	private void addPost(String title, String content, String userName, String createDate) 
 			throws IOException {
 		// 文件地址 + 文件名
@@ -67,5 +107,5 @@ public class UserPostController extends HttpServlet {
 		writer.write(content);
 		writer.close();
 	}
-	
+	*/
 }

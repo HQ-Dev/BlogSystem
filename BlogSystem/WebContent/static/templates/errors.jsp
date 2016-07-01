@@ -24,7 +24,7 @@
 	</c:if>
 
 	<label><a href="/BlogSystem/static/templates/register.jsp">返回注册页面</a></label>
-	
+	<label><a href="/BlogSystem/static/templates/login.jsp">返回登录页面</a></label>
 	<!-- 增加页角  -->
  	<jsp:include page="/static/common/footer.jsp" />
 

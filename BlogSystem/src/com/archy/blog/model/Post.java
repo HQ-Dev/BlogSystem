@@ -2,34 +2,36 @@ package com.archy.blog.model;
 
 public class Post {
 
-	private static long postId = 1;
+	private static long id = 1;
 	
-	private long id;
+	private long postId;
 	private String title;
 	private String createdDate;
 	private String content;
 	
+	public Post() {};
+	
 	public Post(String title, String createDate) {
-		this.id = postId;
-		postId++;
+		this.postId = id;
+		id++;
 		this.title = title;
 		this.createdDate = createDate;
 	}
 	
 	public Post(String title, String content, String createDate) {
-		this.id = postId;
-		postId++;
+		this.postId = id;
+		id++;
 		this.title = title;
 		this.content = content;
 		this.createdDate = createDate;
 	}
 
-	public long getId() {
-		return id;
+	public long getPostId() {
+		return postId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setPostId(long postId) {
+		this.postId = postId;
 	}
 
 	public String getTitle() {

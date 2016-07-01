@@ -2,6 +2,12 @@ package com.archy.blog.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -20,15 +26,21 @@ import com.archy.blog.util.security.ArchyBase64;
 public class UserLoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	Connection connection = null;
+	Statement statement = null;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		/*
+		 *  直接登录 /login 会检查请求中是否有 cookies ，有的话就跳转到用户界面，没有则跳转到登录界面
+		 */
 		Cookie[] cookies = request.getCookies();
 		
 		if (cookies != null) {
 			for (int i = 0; i < cookies.length; i++) {
 				Cookie c = cookies[i];
 				if (c.getName().equals("user")) {   // 注意清除cookie privacy history
-					String user = c.getValue();
+					//String user = c.getValue();
 					
 					// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/static/templates/userposts.jsp");
@@ -51,12 +63,17 @@ public class UserLoginController extends HttpServlet {
 		String[] values = request.getParameterValues("remember-me");
 		
 		// 数据是否和数据库中相等
-		User user = Data.getByUsername(userName);
-        if (user == null || !user.getPassword().equals(password)) {
-        	response.sendRedirect("/BlogSystem/static/html/loginFailed.html");
+		User user = new User();
+        
+        List<String> errors = new ArrayList<>();
+        
+        // 1. 查看用户名是否重复,密码是否正确
+        if (!isUsernameAndPwInvalid(userName, password, user)) {
+        	errors.add("用户名或者密码输入错误！");
         }
-        // 登陆成功的情况下
-        else {
+        
+        if (errors.isEmpty()) {
+        	// 登陆成功的情况下
         	if (values != null && !values[0].isEmpty()) { // 这里表示用户勾选了Remember Me
         		// 对 cookie 中的值用base64编码加密
         		//String encodeUserName =  ArchyBase64.encode(userName);
@@ -68,21 +85,72 @@ public class UserLoginController extends HttpServlet {
         		
         		String next = (String) request.getSession().getAttribute("next");
         		if (next == null)
-        			response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        			request.getRequestDispatcher("userPost?username=" + user.getUserName()).forward(request, response);
         		else 
-        			response.sendRedirect(next);
+        			request.getRequestDispatcher(next).forward(request, response);
             	return;
         	} else {  
         		// 没有勾选自动登录的处理情况： 不创建 cookie
         		request.getSession().setAttribute("user", user);
         		String next = (String) request.getSession().getAttribute("next");
         		if (next == null)
-        			response.sendRedirect("/BlogSystem/userPost?username=" + user.getUserName());
+        			request.getRequestDispatcher("userPost?username=" + user.getUserName()).forward(request, response);
         		else 
-        			response.sendRedirect(next);
+        			request.getRequestDispatcher(next).forward(request, response);
         	}
-        }
+        } else {
+        	// 登录失败
+        	request.setAttribute("errors", errors);
+        	request.getRequestDispatcher("/static/templates/errors.jsp").forward(request, response);
+        }   
+        	
+     }	
+		
+	
+	/*
+	 * 与数据库进行交互
+	 */
+	
+	private boolean isUsernameAndPwInvalid(String userName,String password,User user) {
+		boolean result = false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/blogSystem"
+							+ "?useUnicode=true&characterEncoding=utf8", "root", "123456");
+			statement = connection.createStatement();
 			
+			ResultSet rSet = statement.executeQuery("select * from user");
+			
+			while (rSet.next()) {
+				if (userName.equals(rSet.getString("userName"))
+						&& password.equals(rSet.getString("password"))) {
+					user.setUserId(rSet.getLong("userId"));
+					user.setUserName(rSet.getString("userName"));
+					user.setEmail(rSet.getString("email"));
+					user.setPassword(rSet.getString("password"));
+					user.setAvatar(rSet.getString("avatar"));
+					user.setDescription(rSet.getString("description"));
+					result = true;
+				}
+			}
+			
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException ignore) {
+				//
+			}
+		}
+		
+		return result;
 	}
 
 }
