@@ -32,7 +32,7 @@ public class UserLoginController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		/*
-		 *  直接登录 /login 会检查请求中是否有 cookies ，有的话就跳转到用户界面，没有则跳转到登录界面
+		 *  直接登录 /login 会检查请求中是否有 cookies ，有的话比较是否有正确的登陆名，是则跳转到用户界面，没有则跳转到登录界面
 		 */
 		Cookie[] cookies = request.getCookies();
 		
@@ -40,12 +40,9 @@ public class UserLoginController extends HttpServlet {
 			for (int i = 0; i < cookies.length; i++) {
 				Cookie c = cookies[i];
 				if (c.getName().equals("user")) {   // 注意清除cookie privacy history
-					//String user = c.getValue();
 					
-					// 说明请求中含有 cookie ，可以跳过登录阶段，直接进入用户主页
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/userposts.jsp");
 					dispatcher.forward(request, response);
-					//response.sendRedirect("/BlogSystem/static/templates/userposts.jsp");
 					return;   // 结束该段程序，不再执行
 				} else {
 					request.getRequestDispatcher("/WEB-INF/templates/login.jsp").forward(request, response);

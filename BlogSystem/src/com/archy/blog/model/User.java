@@ -1,5 +1,7 @@
 package com.archy.blog.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class User {
 	
@@ -7,6 +9,7 @@ public class User {
 	private long userId;
 	private String userName;
 	private String password;
+	private String confirmedPassword;
 	private String email;
 	private String avatar = "/BlogSystem/static/img/avatar-default.jpg";
 	private String description = null;
@@ -16,12 +19,15 @@ public class User {
 	
 	}
 	
-	public User(String userName, String password, String email) {
+	public User(String userName, String password, String confirmedPassword, String email) {
 		this.userId = id;
 		id++;
 		this.userName = userName;
 		this.password = password;
+		this.confirmedPassword = confirmedPassword;
 		this.email = email;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		this.registeredDate = sdf.format(new Date());
 	}
 
 	public long getUserId() {
@@ -46,6 +52,15 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	
+	public String getConfirmedPassword() {
+		return confirmedPassword;
+	}
+
+	public void setConfirmedPassword(String confirmedPassword) {
+		this.confirmedPassword = confirmedPassword;
 	}
 
 	public String getEmail() {

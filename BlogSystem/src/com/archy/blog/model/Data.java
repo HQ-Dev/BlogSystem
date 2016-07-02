@@ -23,9 +23,9 @@ public class Data {
 	public static List<User> users = new ArrayList<>();
 	
 	static {
-		users.add(new User("John", "123456", "tianmaying1@163.com"));
-		users.add(new User("Lily", "123456", "tianmaying2@163.com"));
-		users.add(new User("Dasiy", "123456", "tianmaying3@163.com"));
+		users.add(new User("John", "123456","123456", "tianmaying1@163.com"));
+		users.add(new User("Lily", "123456", "123456","tianmaying2@163.com"));
+		users.add(new User("Dasiy", "123456","123456", "tianmaying3@163.com"));
 	}
 	
 	public static List<User> getUsers() {
