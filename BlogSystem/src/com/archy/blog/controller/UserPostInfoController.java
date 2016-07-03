@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +20,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.archy.blog.model.Comment;
 import com.archy.blog.model.Post;
 import com.archy.blog.model.User;
+import com.archy.blog.service.CommentService;
 import com.archy.blog.service.PostService;
 
 @WebServlet(description = "处理创建博文成功后如何显示博文详情页面的控制器", urlPatterns = { "/postInfo.do" })
@@ -43,15 +46,38 @@ public class UserPostInfoController extends HttpServlet {
 		String	postId = request.getParameter("postId");
 		post = postService.findByPostId(Long.valueOf(postId));
 		
+		// 获得指定文章 postId 的所有评论
+		CommentService commentService = new CommentService();
+		List<Comment> comments = commentService.findCommentsByPostId(Long.valueOf(postId));
 		request.getSession().setAttribute("post", post);
+		if (comments != null) {
+			request.getSession().setAttribute("comments", comments);
+			request.getRequestDispatcher("/WEB-INF/templates/post.jsp").forward(request, response);
+		} else {
+			request.getRequestDispatcher("/WEB-INF/templates/post.jsp").forward(request, response);
+		}
 		
-		request.getRequestDispatcher("/WEB-INF/templates/post.jsp").forward(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		request.setCharacterEncoding("utf8");
+		String content = request.getParameter("comment");
+		User user = (User) request.getSession().getAttribute("user");
+		Post post = (Post) request.getSession().getAttribute("post");
+		
+		CommentService commentService = new CommentService();
+		if (commentService.createComment(content, post, user)) { // 创建成功
+			// 获取 所有 comments , 设置 comments 属性 ，并跳转到 post.jsp 页面 
+			List<Comment> comments = commentService.findCommentsByPostId(post.getPostId());
+			if (comments != null) {
+				request.getSession().setAttribute("comments", comments);
+				request.getRequestDispatcher("/WEB-INF/templates/post.jsp").forward(request, response);
+			}
+		} else { // 创建失败
+			doGet(request, response);
+		}
 	}
 	
 	

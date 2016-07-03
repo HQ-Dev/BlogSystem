@@ -53,7 +53,7 @@ public class UserPostController extends HttpServlet {
 				if (!postService.findByCreator(user.getUserId()).isEmpty()) { // 获取博文成功
 					int lastIndex = postService.findByCreator(user.getUserId()).size() - 1;
 					post = postService.findByCreator(user.getUserId()).get(lastIndex);
-					request.setAttribute("post", post);
+					request.getSession().setAttribute("post", post);
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/post.jsp");
 					dispatcher.forward(request, response);
 				}
