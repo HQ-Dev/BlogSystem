@@ -1,3 +1,4 @@
+<%@page import="com.archy.blog.model.User"%>
 <%@page import="java.util.Map,java.util.Date"%>
 <%@page import="java.util.ArrayList, java.text.SimpleDateFormat"%>
 <%@page import="com.archy.blog.model.Post"%>
@@ -25,7 +26,7 @@
 	
 	<div class="container">
 		<div class="page-header">
-	    <h1>${user.userName} 
+	    <h1>${user.userName}
 				<small> 欢迎来到你的博客主页.</small>
 			</h1>
 		</div>

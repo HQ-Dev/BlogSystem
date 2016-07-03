@@ -20,6 +20,7 @@ public class UserDao {
 	
     protected User resultToUser(ResultSet rs) throws SQLException {
         User user = new User();
+        user.setUserName(rs.getString("userName"));
         user.setAvatar(rs.getString("avatar"));
         user.setEmail(rs.getString("email"));
         user.setUserId(rs.getLong("userId"));
@@ -46,6 +47,25 @@ public class UserDao {
             e.printStackTrace();
         }
         return users;
+    }
+    
+    public User findByUserName(String userName) {
+    	// 加上 binary 区分大小写
+    	ResultSet rs = DaoHelper.executeQuery(String.format("select * from `user` where userName = binary '%s'", userName));
+    	List<User> users = resultToUsers(rs);
+    	if (users.isEmpty()) {
+    		return null;
+    	}
+    	return users.get(0); // 有的话必然只有一个，因为根据提前指定的注册规则，用户名是唯一的
+    }
+    
+    public User findById(Long userId) {
+    	ResultSet rs = DaoHelper.executeQuery(String.format("select * from `user` where userId= %s", userId));
+    	List<User> users = resultToUsers(rs);
+    	if (users.isEmpty()) {
+    		return null;
+    	}
+    	return users.get(0);
     }
     
     // 判断用户名或者邮箱重复

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.archy.blog.model.Post;
 import com.archy.blog.model.User;
+import com.archy.blog.service.PostService;
 
 @WebServlet("/userPost")
 public class UserPostListController extends HttpServlet {
@@ -37,8 +38,9 @@ public class UserPostListController extends HttpServlet {
 		//getPostsFromLocal(request);
 		User user = (User) request.getSession().getAttribute("user");
 		List<Post> posts = new ArrayList<>();
+		PostService postService = new PostService();
 		
-		posts = getPostsFromMysql(user, posts);
+		posts = postService.findByCreator(user.getUserId());
 		
 		request.setAttribute("posts", posts);
 		
@@ -53,49 +55,7 @@ public class UserPostListController extends HttpServlet {
 	}
 	
 	
-	
-	// 用过数据库获得博文s
-	private ArrayList<Post> getPostsFromMysql(User user, List<Post> posts) {
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/blogSystem"
-					+ "?useUnicode=true&characterEncoding=utf8", "root", "123456");
-			statement = connection.createStatement();
-			
-			int creator = (int) user.getUserId();
-			
-			ResultSet resultSet = statement.executeQuery("select * from post where creator=" + creator);
-			while(resultSet.next()){
-				Post post = new Post();
-				post.setPostId(resultSet.getLong("postId"));
-				post.setTitle(resultSet.getString("title"));
-				post.setContent(resultSet.getString("content"));
-				post.setCreatedDate(resultSet.getString("createdDate"));
-				
-				posts.add(post);
-			}
-			
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (connection != null)
-					connection.close();
-				if (statement != null)
-					statement.close();
-			} catch (SQLException ignore) {
-				//
-			}
-		}
-		
-		return  (ArrayList<Post>) posts;
-	}
-	
-	
-	
-	
+
 	
 	
 	// TreeMap 排序用，因为希望信息的日期越近的排在越上面

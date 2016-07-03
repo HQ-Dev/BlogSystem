@@ -8,7 +8,7 @@ public class Post {
 	private String title;
 	private String createdDate;
 	private String content;
-	
+	private User creator;
 	public Post() {};
 	
 	public Post(String title, String createDate) {
@@ -57,7 +57,14 @@ public class Post {
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
 	
 	
 }

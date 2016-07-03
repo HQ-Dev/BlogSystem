@@ -9,6 +9,20 @@ public class UserService {
 	
 	private UserDao userDao = new UserDao();
 	
+	public List<User> findAllUsers() {
+		return userDao.findAll();
+	}
+	
+	public User login(String userName, String password, List<String> errors) {
+		User user = userDao.findByUserName(userName);
+		if (user == null || !user.getPassword().equals(password)) {
+			errors.add("用户名或者密码错误！");
+			return null;
+		}
+		return user;
+	}
+	
+	
 	public boolean register(User user, List<String> errors) {
 		// 1. 检验注册邮箱是否不合规
 		if(isInvalidEmail(user))

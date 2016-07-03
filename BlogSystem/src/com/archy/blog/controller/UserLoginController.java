@@ -18,8 +18,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import com.archy.blog.model.Data;
 import com.archy.blog.model.User;
+import com.archy.blog.service.UserService;
 import com.archy.blog.util.security.ArchyBase64;
 
 @WebServlet("/login")
@@ -57,17 +60,14 @@ public class UserLoginController extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String[] values = request.getParameterValues("remember-me");
-		
-		User user = new User();
+		UserService userService = new UserService();
+		User user = null;
         
         List<String> errors = new ArrayList<>();
         
         // 1. 查看用户名是否重复,密码是否正确
-        if (!isUsernameAndPwInvalid(userName, password, user)) {
-        	errors.add("用户名或者密码输入错误！");
-        }
-        
-        if (errors.isEmpty()) {
+        user = userService.login(userName, password, errors);
+        if (user != null) {
         	// 登陆成功的情况下
         	if (values != null && !values[0].isEmpty()) { // 这里表示用户勾选了Remember Me
         		// 对 cookie 中的值用base64编码加密
@@ -80,7 +80,7 @@ public class UserLoginController extends HttpServlet {
         		
         		String next = (String) request.getSession().getAttribute("next");
         		if (next == null)
-        			request.getRequestDispatcher("userPost?username=" + user.getUserName()).forward(request, response);
+        			request.getRequestDispatcher("userPost?userName=" + user.getUserName()).forward(request, response);
         		else 
         			request.getRequestDispatcher(next).forward(request, response);
             	return;
@@ -89,7 +89,7 @@ public class UserLoginController extends HttpServlet {
         		request.getSession().setAttribute("user", user);
         		String next = (String) request.getSession().getAttribute("next");
         		if (next == null)
-        			request.getRequestDispatcher("userPost?username=" + user.getUserName()).forward(request, response);
+        			request.getRequestDispatcher("userPost?userName=" + user.getUserName()).forward(request, response);
         		else 
         			request.getRequestDispatcher(next).forward(request, response);
         	}
@@ -97,55 +97,7 @@ public class UserLoginController extends HttpServlet {
         	// 登录失败
         	request.setAttribute("errors", errors);
         	request.getRequestDispatcher("/WEB-INF/templates/errors.jsp").forward(request, response);
-        }   
-        	
-     }	
-		
-	
-	/*
-	 * 与数据库进行交互
-	 */
-	
-	private boolean isUsernameAndPwInvalid(String userName,String password,User user) {
-		boolean result = false;
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/blogSystem"
-							+ "?useUnicode=true&characterEncoding=utf8", "root", "123456");
-			statement = connection.createStatement();
-			
-			ResultSet rSet = statement.executeQuery("select * from user");
-			
-			while (rSet.next()) {
-				if (userName.equals(rSet.getString("userName"))
-						&& password.equals(rSet.getString("password"))) {
-					user.setUserId(rSet.getLong("userId"));
-					user.setUserName(rSet.getString("userName"));
-					user.setEmail(rSet.getString("email"));
-					user.setPassword(rSet.getString("password"));
-					user.setAvatar(rSet.getString("avatar"));
-					user.setDescription(rSet.getString("description"));
-					result = true;
-				}
-			}
-			
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException ignore) {
-				//
-			}
-		}
-		
-		return result;
-	}
+        }   	
+     }		
 
 }
