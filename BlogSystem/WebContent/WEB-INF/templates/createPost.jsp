@@ -33,17 +33,19 @@
 				<form action="/BlogSystem/createPost" method="POST">
   				<div class="form-group">
     				<label for="title">标题</label>
-			  	  <input type="text" class="form-control" id="title" name="title" placeholder="文章的标题" autofocus>
+			  	  <input type="text" class="form-control" id="title" name="title" oninput="autoSava()" placeholder="文章的标题" autofocus>
 				  </div>
 				  <div class="form-group">
 				    <label for="content">内容</label>
-				    <textarea class="form-control" id="content" name="content" placeholder="文章的内容" rows="18">
+				    <textarea class="form-control" id="content" name="content" oninput="autoSava()" placeholder="文章的内容" rows="18">
 				    </textarea>
 				    <script type="text/javascript">
   						$('#content').wysihtml5();
-						</script>	
+						</script>
 				  </div>
-				  <button type="submit" class="btn pull-right btn-primary">提交</button>
+				  <div id="testdiv">
+				  	<button type="submit" class="btn pull-right btn-primary" onclick="show_confirm()">提交</button>
+				  </div>
 				</form>
 			  
 			</div>
@@ -61,6 +63,7 @@
 	
 	<!-- 增加页角  -->
  	<jsp:include page="/WEB-INF/common/footer.jsp" />
-
+	<script src="/BlogSystem/static/scripts/storage.js">
+	</script>
 </body>
 </html>
